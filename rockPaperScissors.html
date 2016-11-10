@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<button id="start-game"></button>
+<script type="text/javascript">
+	
+document.getElementById("start-game").onclick = playTournament;
+
+
+function getUserChoice() {
+  var userSelection = prompt("Do you choose rock, paper or scissors?");
+  var whiteListRock = ["rock", "rocks", "Rock", "Rocks"];
+  var whiteListRockIndex = whiteListRock.indexOf(userSelection);
+  var whiteListScissor = ["scissor", "scissors", "Scissor", "Scissors"];
+  var whiteListScissorIndex = whiteListScissor.indexOf(userSelection);
+  var whiteListPaper = ["paper", "papers", "Paper", "Papers"];
+  var whiteListPaperIndex = whiteListPaper.indexOf(userSelection);
+  var acceptableUserInput = false;
+
+  while (acceptableUserInput === false) {
+    if (whiteListRockIndex !== -1) {
+      userSelection = "rock";
+      acceptableUserInput = true;
+      return userSelection;
+    } else if (whiteListScissorIndex !== -1) {
+      userSelection = "scissors";
+      acceptableUserInput = true;
+      return userSelection;
+    } else if (whiteListPaperIndex !== -1) {
+      userSelection = "paper";
+      acceptableUserInput = true;
+      return userSelection;
+    } else {
+      acceptableUserInput = false;
+      return getUserChoice()
+    }
+  }
+}
+
+// get computer choice
+function getComputerChoice() {
+  var computerSelection = Math.random();
+  if (computerSelection < 0.34) {
+    computerSelection = "rock";
+  } else if (computerSelection <= 0.67) {
+    computerSelection = "paper";
+  } else {
+    computerSelection = "scissors";
+  }
+  alert("Computer chose " + computerSelection);
+  return computerSelection;
+}
+
+// Get winner
+function getWinner(computer, user) {
+  if (computer === user) {
+    return "Tie";
+  } else if ((computer === "rock" && user == "scissors") || (computer === "paper" && user == "rock") || (computer === "scissors" && user == "paper")) {
+    return "Computer";
+  } else {
+    return ("User");
+  }
+}
+
+function runProgram() {
+  var userSelection = getUserChoice();
+  var computerSelection = getComputerChoice();
+  var winner = getWinner(computerSelection, userSelection);
+  alert("Winner is " + winner);
+  return winner;
+}
+
+function playTournament() {
+  var userScore = 0;
+  var computerScore = 0;
+  var winningScore = prompt("How many games until you win?");
+  // convert to number and check if > 0
+  if (winningScore > 0 && Number.isInteger(parseInt(winningScore)) === true) {
+    while (userScore < winningScore && computerScore < winningScore) {
+      var gameWinner = runProgram();
+      var isInteger = Number.isInteger(winningScore);
+      if (gameWinner === "Computer") {
+        computerScore++;
+        alert("Computer won round");
+      } else if (gameWinner === "User") {
+        userScore++;
+        alert("User won round");
+      } else {
+        alert("Round was tie");
+      }
+    }
+
+    if (userScore > computerScore) {
+      alert("User wons game.  Score: Computer-" + computerScore + " User-" + userScore);
+    } else {
+      alert("Computer wons game.  Score: Computer-" + computerScore + " User-" + userScore);
+    }
+  }
+  else {
+    playTournament(); // if not integer and greater than 0, rerun this function
+  }
+}
+
+playTournament();
+
+
+</script>
+
+</body>
+</html>
